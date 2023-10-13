@@ -26,12 +26,27 @@
 
 ### 1. 채용공고 등록
 
-- 기능구현
+#### 기능구현
 
-- 채용공고 data
+[dto]
 
-  > - 필수 사항 : 공고명(title), 직군(jobGroup)/직무(job), 회사명(companyName), 경력(experienceYears), 근무지(workingArea), 공고 서론(introduction), 자격요건(qualifications), 혜택 및 복지(benefits), 주요 업무(tasks), 공고 시작일(startDate), 공고 마감일(endDate), 공고 상태(status)
-  > - 선택 사항 : 우대사항(preferenceQualifications), 사용기술(technologyStacks), 채용보상금(recruitmentCompensation)
+- request를 통해 받은 데이터를 비즈니스 로직에 맞게 검증, 변형하는 책임을 위임하고 dto의 불변성을 지키기 위해 setter 사용을 지양하였습니다.
+
+- dto의 값 검증을 위한 상수 검증 class(array-contains-constants.validator.ts)를 custom하였습니다.
+
+[entity]
+
+- orm entity 내부에 비즈니스 로직을 구현하여 비즈니스 로직이 다른 로직에 의존하지 않도록 하였습니다.
+
+[service]
+
+- service는 entity의 비즈니스 로직과 repository에 의존하며, 트랜잭션을 관리합니다. 채용공고 등록
+  기능에서는 큰 역할을 하지 않습니다.
+
+#### 채용공고 data
+
+> - 필수 사항 : 공고명(title), 직군(jobGroup)/직무(job), 회사명(companyName), 경력(experienceYears), 근무지(workingArea), 공고 서론(introduction), 자격요건(qualifications), 혜택 및 복지(benefits), 주요 업무(tasks), 공고 시작일(startDate), 공고 마감일(endDate), 공고 상태(status)
+> - 선택 사항 : 우대사항(preferenceQualifications), 사용기술(technologyStacks), 채용보상금(recruitmentCompensation)
 
 - 하나의 회사(company)는 여러개의 채용공고(recruitment-notice)를 등록할 수 있어야 하기 때문에, 회사(id)와 채용공고(id)의 관계를 일대다로 설정했습니다. 따라서 회사명(companyName)의 경우, companyId로 조회할 수 있습니다.
 
