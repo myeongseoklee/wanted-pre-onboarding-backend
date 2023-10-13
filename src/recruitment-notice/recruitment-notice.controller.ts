@@ -49,7 +49,9 @@ export class RecruitmentNoticeController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.recruitmentNoticeService.remove(+id);
+  async remove(@Param('id') id: string) {
+    await this.recruitmentNoticeService.remove(+id);
+
+    return { message: 'RECRUITMENT_REMOVED' };
   }
 }

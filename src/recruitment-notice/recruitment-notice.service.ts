@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { RecruitmentNotice } from './entity/recruitment-notice.entity';
 import { RecruitmentNoticeRepository } from './repository/recruitment-notice.repository';
 import { UpdateRecruitmentNoticeProps } from './type/recruitment-notice.type';
+import { UpdateResult } from 'typeorm';
 
 @Injectable()
 export class RecruitmentNoticeService {
@@ -35,7 +36,14 @@ export class RecruitmentNoticeService {
       .save(recruitmentNotice);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} recruitmentNotice`;
+  async remove(id: number) {
+    const { affected }: UpdateResult = await this.recruitmentRepository
+      .getRepository()
+      .softDelete({ id });
+
+    if (affected < 1)
+      throw new BadRequestException('RECRUITMENT_NOTICE_ID_NOT_EXIST');
+
+    return;
   }
 }
