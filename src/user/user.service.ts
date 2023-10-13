@@ -1,9 +1,22 @@
+import { JobRepository } from './../recruitment-notice/repository/job.repository';
 import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
+import { User } from './user.entity';
+import { UserRepository } from './user.repository';
 
 @Injectable()
 export class UserService {
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  constructor(
+    private userRepository: UserRepository,
+    private jobRepository: JobRepository,
+  ) {}
+
+  async create(user: User) {
+    await this.userRepository.saveIfNotExist(user);
+  }
+
+  async getUser(id: number) {
+    return await this.userRepository
+      .getRepository()
+      .findOne({ where: { id }, relations: ['job'] });
   }
 }
