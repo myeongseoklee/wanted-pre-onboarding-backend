@@ -1,11 +1,18 @@
 import { Injectable } from '@nestjs/common';
-import { CreateRecruitmentNoticeDto } from './dto/create-recruitment-notice.dto';
 import { UpdateRecruitmentNoticeDto } from './dto/update-recruitment-notice.dto';
+import { RecruitmentNotice } from './entity/recruitment-notice.entity';
+import { RecruitmentNoticeRepository } from './repository/recruitment-notice.repository';
 
 @Injectable()
 export class RecruitmentNoticeService {
-  create(createRecruitmentNoticeDto: CreateRecruitmentNoticeDto) {
-    return 'This action adds a new recruitmentNotice';
+  constructor(private recruitmentRepository: RecruitmentNoticeRepository) {}
+
+  async create(recruitmentNotice: RecruitmentNotice) {
+    return await this.recruitmentRepository
+      .getRepository()
+      .save(recruitmentNotice, {
+        reload: false,
+      });
   }
 
   findAll() {

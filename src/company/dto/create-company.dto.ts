@@ -17,7 +17,6 @@ export class CreateCompanyDto {
   @IsString()
   @MaxLength(30)
   name: string;
-  constructor() {}
 
   /**
    * 인사담당자의 이메일은 60자 이하인 문자열로서 이메일 주소 형식에 적합해야 한다.
@@ -35,6 +34,8 @@ export class CreateCompanyDto {
   @IsString()
   @Matches(/^[A-Za-z\d!@#$%^&*()]{8,30}$/)
   password: string;
+
+  constructor() {}
 
   toEntity(): Company {
     const props: CreateCompanyProps = {
