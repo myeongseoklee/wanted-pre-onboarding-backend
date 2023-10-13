@@ -40,7 +40,7 @@ class WorkingAreaDto {
   @IsLatitude()
   latitude: string;
 
-  toObject() {
+  getProps() {
     const workingAreaObj: WorkingArea = {
       longitude: this.longitude,
       latitude: this.latitude,
@@ -153,7 +153,7 @@ export class CreateRecruitmentNoticeDto {
     const data: CreateRecruitmentNoticeProps = {
       title: this.title,
       experienceYears: this.experienceYears,
-      workingArea: this.workingArea.toObject(),
+      workingArea: this.workingArea.getProps(),
       introduction: this.introduction,
       qualifications: this.qualifications,
       benefits: this.benefits,
@@ -168,6 +168,6 @@ export class CreateRecruitmentNoticeDto {
       companyId: this.companyId,
     };
 
-    return RecruitmentNotice.create(data);
+    return RecruitmentNotice.create(Object.freeze(data));
   }
 }

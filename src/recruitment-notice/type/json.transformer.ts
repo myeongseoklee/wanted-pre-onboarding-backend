@@ -5,7 +5,6 @@ export class JsonTransformer<EntityValueType> implements ValueTransformer {
     if (!entityValue) {
       return null;
     }
-    console.log('entityValue: ', entityValue);
 
     return JSON.stringify(entityValue);
   }

@@ -16,6 +16,7 @@ import {
   ExperienceType,
   CreateRecruitmentNoticeProps,
   WorkingArea,
+  UpdateRecruitmentNoticeProps,
 } from '../type/recruitment-notice.type';
 import { Job } from './job.entity';
 import { RecruitmentNoticeStatusType } from '../type/recruitment-notice.type';
@@ -139,19 +140,10 @@ export class RecruitmentNotice extends BaseEntity {
 
   static create(props: CreateRecruitmentNoticeProps): RecruitmentNotice {
     const recruitmentNotice = new RecruitmentNotice();
-    recruitmentNotice.title = props.title;
-    recruitmentNotice.experienceYears = props.experienceYears;
-    recruitmentNotice.workingArea = props.workingArea;
-    recruitmentNotice.introduction = props.introduction;
-    recruitmentNotice.qualifications = props.qualifications;
-    recruitmentNotice.benefits = props.benefits;
-    recruitmentNotice.tasks = props.tasks;
-    recruitmentNotice.startDate = props.startDate;
-    recruitmentNotice.endDate = props.endDate;
-    recruitmentNotice.status = props.status;
-    recruitmentNotice.recruitmentCompensation = props.recruitmentCompensation;
-    recruitmentNotice.preferenceQualifications = props.preferenceQualifications;
-    recruitmentNotice.technologyStacks = props.technologyStacks;
+
+    for (const key in props) {
+      recruitmentNotice[key] = props[key];
+    }
 
     const job = new Job();
     job.id = props.jobId;
@@ -164,5 +156,11 @@ export class RecruitmentNotice extends BaseEntity {
     recruitmentNotice.company = company;
 
     return recruitmentNotice;
+  }
+
+  update(props: UpdateRecruitmentNoticeProps) {
+    for (const key in props) {
+      this[key] = props[key];
+    }
   }
 }

@@ -36,14 +36,16 @@ export class RecruitmentNoticeController {
   }
 
   @Patch(':id')
-  update(
+  async update(
     @Param('id') id: string,
     @Body() updateRecruitmentNoticeDto: UpdateRecruitmentNoticeDto,
   ) {
-    return this.recruitmentNoticeService.update(
-      +id,
-      updateRecruitmentNoticeDto,
+    await this.recruitmentNoticeService.update(
+      parseInt(id),
+      updateRecruitmentNoticeDto.getProps(),
     );
+
+    return { message: 'RECRUITMENT_NOTICE_UPDATED' };
   }
 
   @Delete(':id')

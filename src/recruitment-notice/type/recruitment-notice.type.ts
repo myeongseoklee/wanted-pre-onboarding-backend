@@ -51,3 +51,6 @@ export interface CreateRecruitmentNoticeProps {
   jobId: number;
   companyId: number;
 }
+
+export interface UpdateRecruitmentNoticeProps
+  extends Omit<Partial<CreateRecruitmentNoticeProps>, 'jobId' | 'companyId'> {}
