@@ -15,11 +15,12 @@ import {
   ExperienceYearsCodeType,
   ExperienceType,
   CreateRecruitmentNoticeProps,
-  WorkingArea,
+  Coordinate,
   UpdateRecruitmentNoticeProps,
 } from '../type/recruitment-notice.type';
 import { Job } from './job.entity';
 import { RecruitmentNoticeStatusType } from '../type/recruitment-notice.type';
+import { City } from './city.entity';
 
 @Index(['id'])
 @Entity('recruitment_notice', { schema: 'wanted' })
@@ -40,11 +41,22 @@ export class RecruitmentNotice extends BaseEntity {
   experienceYears: ExperienceType[];
 
   @Column('varchar', {
-    name: 'working_area',
-    transformer: new JsonTransformer<WorkingArea>(),
+    name: 'coordinate',
+    transformer: new JsonTransformer<Coordinate>(),
     nullable: false,
+    length: 100,
   })
-  workingArea: WorkingArea;
+  coordinate: Coordinate;
+
+  @ManyToOne(() => City, (city) => city.recruitmentNotices)
+  @JoinColumn([
+    {
+      name: 'city_id',
+      referencedColumnName: 'id',
+      foreignKeyConstraintName: 'fk_recruitment_notice_city_id',
+    },
+  ])
+  city: City;
 
   @Column('text', {
     name: 'introduction',
@@ -148,12 +160,15 @@ export class RecruitmentNotice extends BaseEntity {
     const job = new Job();
     job.id = props.jobId;
 
-    recruitmentNotice.job = job;
+    const city = new City();
+    city.id = props.cityId;
 
     const company = new Company();
     company.id = props.companyId;
 
+    recruitmentNotice.job = job;
     recruitmentNotice.company = company;
+    recruitmentNotice.city = city;
 
     return recruitmentNotice;
   }

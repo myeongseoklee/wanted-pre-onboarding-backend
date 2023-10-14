@@ -20,7 +20,7 @@ export class Job extends BaseEntity {
   @Column({ type: 'varchar', name: 'name', nullable: false, length: 30 })
   name: string;
 
-  @ManyToOne(() => JobGroup, (jobGroup) => jobGroup.jobs, { eager: true })
+  @ManyToOne(() => JobGroup, (jobGroup) => jobGroup.jobs)
   @JoinColumn([
     {
       name: 'job_group_id',

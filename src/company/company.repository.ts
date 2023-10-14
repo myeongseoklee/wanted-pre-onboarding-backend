@@ -8,7 +8,7 @@ import { Repository } from 'typeorm';
 export class CompanyRepository extends MysqlRepositoryBase<Company> {
   constructor(
     @InjectRepository(Company)
-    private companyRepository: Repository<Company>,
+    private readonly companyRepository: Repository<Company>,
   ) {
     super(companyRepository);
   }

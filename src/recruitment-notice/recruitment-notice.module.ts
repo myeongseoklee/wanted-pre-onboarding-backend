@@ -8,8 +8,10 @@ import { RecruitmentNotice } from './entity/recruitment-notice.entity';
 import { JobRepository } from './repository/job.repository';
 import { JobGroupRepository } from './repository/job-group.repository';
 import { RecruitmentNoticeRepository } from './repository/recruitment-notice.repository';
+import { City } from './entity/city.entity';
+import { Province } from './entity/province.entity';
 
-const entities = [JobGroup, Job, RecruitmentNotice];
+const entities = [RecruitmentNotice, JobGroup, Job, City, Province];
 const controllers = [RecruitmentNoticeController];
 const services = [RecruitmentNoticeService];
 const repositories = [

@@ -32,12 +32,13 @@ export type ExperienceType = keyof typeof ExperienceYears;
 
 export type ExperienceYearsCodeType = (typeof ExperienceYears)[ExperienceType];
 
-export type WorkingArea = { longitude: string; latitude: string };
+export type Coordinate = { longitude: string; latitude: string };
 
 export interface CreateRecruitmentNoticeProps {
   title: string;
   experienceYears: ExperienceType[];
-  workingArea: WorkingArea;
+  coordinate: Coordinate;
+  cityId: number;
   introduction: string;
   qualifications: string;
   benefits: string;
