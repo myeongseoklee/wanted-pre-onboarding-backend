@@ -1,43 +1,73 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { RecruitmentNotice } from './entity/recruitment-notice.entity';
 import { RecruitmentNoticeRepository } from './repository/recruitment-notice.repository';
 import { UpdateRecruitmentNoticeProps } from './type/recruitment-notice.type';
 import { UpdateResult } from 'typeorm';
+import { PageOptionsDto } from './dto/query-dto/page-options.dto';
+import { PageMetaDto } from './dto/query-dto/page-meta.dto';
+import {
+  PageResponseDto,
+  PageResponseType,
+} from './dto/query-dto/page.response-dto';
 
 @Injectable()
 export class RecruitmentNoticeService {
-  constructor(private recruitmentRepository: RecruitmentNoticeRepository) {}
+  constructor(
+    private recruitmentNoticeRepository: RecruitmentNoticeRepository,
+  ) {}
 
   async create(recruitmentNotice: RecruitmentNotice) {
-    return await this.recruitmentRepository
+    return await this.recruitmentNoticeRepository
       .getRepository()
       .save(recruitmentNotice, {
         reload: false,
       });
   }
 
-  findAll() {
-    return `This action returns all recruitmentNotice`;
+  async getPaginatedList(pageOptionsDto: PageOptionsDto) {
+    const { take, skip, order, searchArray } = pageOptionsDto;
+
+    const { total, data } =
+      await this.recruitmentNoticeRepository.getPaginatedList(
+        take,
+        skip,
+        order,
+        searchArray,
+      );
+
+    const pageMeteDto = new PageMetaDto({ pageOptionsDto, total });
+    const { lastPage, page } = pageMeteDto;
+
+    if (lastPage < page) throw new NotFoundException('PAGE_NOT_EXIST');
+
+    return new PageResponseDto<PageResponseType>(data, pageMeteDto);
   }
 
   findOne(id: number) {
     return `This action returns a #${id} recruitmentNotice`;
   }
 
-  async update(id: number, props: UpdateRecruitmentNoticeProps) {
-    const recruitmentNotice = await this.recruitmentRepository
+  async update(
+    id: number,
+    updateRecruitmentNoticeProps: UpdateRecruitmentNoticeProps,
+  ) {
+    const recruitmentNotice = await this.recruitmentNoticeRepository
       .getRepository()
       .findOne({ where: { id } });
 
-    recruitmentNotice.update(props);
+    recruitmentNotice.update(updateRecruitmentNoticeProps);
 
-    return await this.recruitmentRepository
+    return await this.recruitmentNoticeRepository
       .getRepository()
       .save(recruitmentNotice);
   }
 
   async remove(id: number) {
-    const { affected }: UpdateResult = await this.recruitmentRepository
+    const { affected }: UpdateResult = await this.recruitmentNoticeRepository
       .getRepository()
       .softDelete({ id });
 

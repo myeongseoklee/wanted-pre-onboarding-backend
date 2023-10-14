@@ -22,7 +22,7 @@ import {
   EXPERIENCE_YEARS,
   ExperienceType,
   CreateRecruitmentNoticeProps,
-  WorkingArea,
+  Coordinate,
 } from '../type/recruitment-notice.type';
 import {
   RECRUITMENT_NOTICE_STATUS,
@@ -31,7 +31,7 @@ import {
 import { RecruitmentNotice } from '../entity/recruitment-notice.entity';
 import { ArrayContainsConstants } from '../type/array-contains-constants.validator';
 
-class WorkingAreaDto {
+class CoordinateDto {
   @IsNotEmpty()
   @IsLongitude()
   longitude: string;
@@ -41,12 +41,12 @@ class WorkingAreaDto {
   latitude: string;
 
   getProps() {
-    const workingAreaObj: WorkingArea = {
+    const coordinateObj: Coordinate = {
       longitude: this.longitude,
       latitude: this.latitude,
     };
 
-    return Object.freeze(workingAreaObj);
+    return Object.freeze(coordinateObj);
   }
 }
 
@@ -72,8 +72,16 @@ export class CreateRecruitmentNoticeDto {
    */
   @IsNotEmptyObject()
   @ValidateNested()
-  @Type(() => WorkingAreaDto)
-  workingArea: WorkingAreaDto;
+  @Type(() => CoordinateDto)
+  coordinate: CoordinateDto;
+
+  /**
+   * 근무지 주소 중 시/군/구 단위 주소의 id입니다.
+   */
+  @Expose()
+  @IsNotEmpty()
+  @IsNumber()
+  cityId: number;
 
   @Expose()
   @IsNotEmpty()
@@ -153,7 +161,8 @@ export class CreateRecruitmentNoticeDto {
     const data: CreateRecruitmentNoticeProps = {
       title: this.title,
       experienceYears: this.experienceYears,
-      workingArea: this.workingArea.getProps(),
+      cityId: this.cityId,
+      coordinate: this.coordinate.getProps(),
       introduction: this.introduction,
       qualifications: this.qualifications,
       benefits: this.benefits,

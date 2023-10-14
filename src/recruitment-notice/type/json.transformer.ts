@@ -11,6 +11,7 @@ export class JsonTransformer<EntityValueType> implements ValueTransformer {
 
   from(databaseValue: string): EntityValueType[] {
     if (!databaseValue) {
+      console.log('databaseValue: ', databaseValue);
       return null;
     }
 
