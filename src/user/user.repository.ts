@@ -16,11 +16,11 @@ export class UserRepository extends MysqlRepositoryBase<User> {
   async saveIfNotExist(user: User) {
     if (await this.isExist(user))
       throw new BadRequestException('USER_ALREADY_EXIST');
-    await this.userRepository.save(user, { reload: false });
+    await this.getRepository().save(user, { reload: false });
   }
 
   private async isExist(user: User) {
-    return await this.userRepository.exist({
+    return await this.getRepository().exist({
       where: { email: user.email },
     });
   }

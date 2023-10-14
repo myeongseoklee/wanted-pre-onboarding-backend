@@ -16,11 +16,11 @@ export class CompanyRepository extends MysqlRepositoryBase<Company> {
   async saveIfNotExist(company: Company) {
     if (await this.isExist(company))
       throw new BadRequestException('COMPANY_ALREADY_EXIST');
-    return await this.companyRepository.save(company, { reload: false });
+    return await this.getRepository().save(company, { reload: false });
   }
 
   private async isExist(company: Company) {
-    return await this.companyRepository.exist({
+    return await this.getRepository().exist({
       where: { email: company.email },
     });
   }

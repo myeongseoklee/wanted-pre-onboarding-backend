@@ -14,7 +14,7 @@ export class JobRepository extends MysqlRepositoryBase<Job> {
   }
 
   async findOneById(id: number) {
-    return await this.jobRepository.findOne({
+    return await this.getRepository().findOne({
       where: { id },
       relations: { jobGroup: true },
     });
