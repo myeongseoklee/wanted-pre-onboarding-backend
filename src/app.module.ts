@@ -3,7 +3,7 @@ import { CompanyModule } from './company/company.module';
 import { RecruitmentNoticeModule } from './recruitment-notice/recruitment-notice.module';
 import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ormConfig } from './common/typeorm.config';
+import { ormConfig } from './config/typeorm.config';
 
 @Module({
   imports: [
