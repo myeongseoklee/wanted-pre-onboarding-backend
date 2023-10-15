@@ -1,6 +1,6 @@
-import { MysqlRepositoryBase } from './../base/mysql-repository.base';
+import { MysqlRepositoryBase } from '../../base/mysql-repository.base';
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { User } from './user.entity';
+import { User } from '../entity/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 

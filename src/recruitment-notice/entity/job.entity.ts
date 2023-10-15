@@ -10,7 +10,6 @@ import {
 } from 'typeorm';
 import { JobGroup } from './job-group.entity';
 import { RecruitmentNotice } from './recruitment-notice.entity';
-import { User } from '../../user/user.entity';
 
 @Index(['id'])
 @Unique(['name'])
@@ -35,7 +34,4 @@ export class Job extends BaseEntity {
     (recruitmentNotice) => recruitmentNotice.job,
   )
   recruitmentNotices: RecruitmentNotice[];
-
-  @OneToMany(() => User, (user) => user.job)
-  users: User[];
 }

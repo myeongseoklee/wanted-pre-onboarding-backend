@@ -1,5 +1,5 @@
 import { RecruitmentNotice } from './../recruitment-notice/entity/recruitment-notice.entity';
-import { Column, Entity, Index, OneToMany } from 'typeorm';
+import { Column, Entity, Index, OneToMany, Unique } from 'typeorm';
 import { BaseEntity } from '../base/entity.base';
 
 export interface CreateCompanyProps {
@@ -9,6 +9,7 @@ export interface CreateCompanyProps {
 }
 
 @Index(['id'])
+@Unique(['name', 'email'])
 @Entity('company', { schema: 'wanted' })
 export class Company extends BaseEntity {
   @Column('varchar', {

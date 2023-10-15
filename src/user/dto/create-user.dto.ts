@@ -8,7 +8,7 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
-import { User, UserSignUpProps } from '../user.entity';
+import { User, UserSignUpProps } from '../entity/user.entity';
 
 export class CreateUserDto {
   /**

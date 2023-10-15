@@ -1,6 +1,6 @@
-import { Job } from '../recruitment-notice/entity/job.entity';
-import { BaseEntity } from '../base/entity.base';
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { JobApplication } from './job-application.entity';
+import { BaseEntity } from '../../base/entity.base';
+import { Column, Entity, Index, OneToMany, Unique } from 'typeorm';
 
 export interface UserSignUpProps {
   name: string;
@@ -9,7 +9,9 @@ export interface UserSignUpProps {
   jobId: number;
 }
 
-@Entity()
+@Index(['id'])
+@Unique(['email'])
+@Entity('user', { schema: 'wanted' })
 export class User extends BaseEntity {
   @Column('varchar', { name: 'name', nullable: false, length: 30 })
   name: string;
@@ -20,26 +22,17 @@ export class User extends BaseEntity {
   @Column('varchar', { name: 'password', nullable: false, length: 30 })
   password: string;
 
-  @ManyToOne(() => Job, (job) => job.name)
-  @JoinColumn([
-    {
-      name: 'job_id',
-      referencedColumnName: 'id',
-      foreignKeyConstraintName: 'fk_user_job_id',
-    },
-  ])
-  job: Job;
+  @OneToMany(
+    () => JobApplication,
+    (jobApplication) => jobApplication.recruitmentNotice,
+  )
+  jobApplications: JobApplication[];
 
   static signUp(props: UserSignUpProps) {
     const user = new User();
     user.name = props.name;
     user.email = props.email;
     user.password = props.password;
-
-    const job = new Job();
-    job.id = props.jobId;
-
-    user.job = job;
 
     return user;
   }
