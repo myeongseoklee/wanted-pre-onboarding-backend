@@ -33,13 +33,13 @@ export class RecruitmentNoticeController {
     paginationOptionsDto: PaginationOptionsDto,
   ) {
     return await this.recruitmentNoticeService.getPaginatedList(
-      paginationOptionsDto.checkPaginateQuery(),
+      paginationOptionsDto.validatePaginateQuery(),
     );
   }
 
   @Get(':id')
-  getOne(@Param('id') id: string) {
-    return this.recruitmentNoticeService.findOne(+id);
+  async getRecruitmentNoticeById(@Param('id') id: string) {
+    return await this.recruitmentNoticeService.getRecruitmentNoticeById(+id);
   }
 
   @Patch(':id')

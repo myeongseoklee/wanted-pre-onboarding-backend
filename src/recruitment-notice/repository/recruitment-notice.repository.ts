@@ -37,11 +37,46 @@ export class RecruitmentNoticeRepository extends MysqlRepositoryBase<Recruitment
     order?: SortType,
     searches?: string[],
   ) {
+    let paginationQuery = this.getPaginationQuery(take, skip, order);
+
+    if (!!searches && searches.length > 0) {
+      paginationQuery = this.addSearchQuery(paginationQuery, searches);
+    }
+
+    return {
+      total: await paginationQuery.getCount(),
+      paginatedList: (
+        await paginationQuery.getRawAndEntities<RecruitmentNoticeListType>()
+      ).raw,
+    };
+  }
+
+  async getPaginatedListByCompanyId(
+    companyId: number,
+    take?: number,
+    skip?: number,
+    order?: SortType,
+  ) {
+    const paginationQuery = this.getPaginationQuery(take, skip, order);
+
+    paginationQuery.andWhere(
+      `${ALIAS.RECRUITMENT_NOTICE}.company_id = ${companyId}`,
+    );
+
+    return {
+      total: await paginationQuery.getCount(),
+      recruitmentListFromCompanyId: (
+        await paginationQuery.getRawAndEntities<RecruitmentNoticeListType>()
+      ).raw,
+    };
+  }
+
+  private getPaginationQuery(take?: number, skip?: number, order?: SortType) {
     const queryBuilder = this.getRepository().createQueryBuilder(
       ALIAS.RECRUITMENT_NOTICE,
     );
 
-    let paginatedQuery = queryBuilder
+    return queryBuilder
       .select([
         `${ALIAS.RECRUITMENT_NOTICE}.id as id`,
         `${ALIAS.RECRUITMENT_NOTICE}.title as title`,
@@ -70,17 +105,6 @@ export class RecruitmentNoticeRepository extends MysqlRepositoryBase<Recruitment
       .limit(take)
       .offset(skip)
       .orderBy({ createdAt: order });
-
-    if (!!searches && searches.length > 0) {
-      paginatedQuery = this.addSearchQuery(paginatedQuery, searches);
-    }
-
-    return {
-      total: await paginatedQuery.getCount(),
-      data: (
-        await paginatedQuery.getRawAndEntities<RecruitmentNoticeListType>()
-      ).raw,
-    };
   }
 
   private addSearchQuery(

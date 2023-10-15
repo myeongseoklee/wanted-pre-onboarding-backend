@@ -17,12 +17,6 @@ export class PaginationOptionsDto {
   readonly order: SortType;
 
   @Expose()
-  @Type(() => String)
-  @IsString()
-  @IsOptional()
-  search?: string;
-
-  @Expose()
   @Type(() => Number)
   @IsNumber()
   page?: number;
@@ -33,6 +27,19 @@ export class PaginationOptionsDto {
   @IsOptional()
   take?: number;
 
+  @Expose()
+  @Type(() => String)
+  @IsString()
+  @IsOptional()
+  search?: string;
+
+  constructor(order: SortType, page?: number, take?: number, search?: string) {
+    this.order = order;
+    this.page = page;
+    this.take = take;
+    this.search = search;
+  }
+
   get skip(): number {
     return this.page <= 0 ? (this.page = 0) : (this.page - 1) * this.take;
   }
@@ -41,18 +48,18 @@ export class PaginationOptionsDto {
     return this.isExistSearch() ? this.search.split(' ') : [];
   }
 
-  checkPaginateQuery() {
-    this.checkPage();
-    this.checkTake();
+  validatePaginateQuery() {
+    this.validatePage();
+    this.validateTake();
 
     return this;
   }
 
-  private checkTake() {
+  private validateTake() {
     this.take = this.take && this.take >= 1 ? this.take : 20;
   }
 
-  private checkPage() {
+  private validatePage() {
     this.page = this.page && this.page >= 1 ? this.page : 1;
   }
 
