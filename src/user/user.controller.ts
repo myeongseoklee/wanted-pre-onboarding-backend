@@ -16,4 +16,14 @@ export class UserController {
   async get(@Param('id') id: number) {
     return await this.userService.getUser(id);
   }
+
+  @Post(':id/recruitment-notice/:recruitmentNoticeId')
+  async createJobApplication(
+    @Param('id') id: number,
+    @Param('recruitmentNoticeId') recruitmentNoticeId: number,
+  ) {
+    await this.userService.createJobApplication(id, recruitmentNoticeId);
+
+    return { message: 'JOB_APPLICATION_CREATED' };
+  }
 }

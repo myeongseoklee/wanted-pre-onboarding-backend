@@ -8,6 +8,7 @@ import {
   Index,
   JoinColumn,
   ManyToOne,
+  OneToMany,
 } from 'typeorm';
 import { JsonTransformer } from '../type/json.transformer';
 import {
@@ -21,6 +22,7 @@ import {
 import { Job } from './job.entity';
 import { RecruitmentNoticeStatusType } from '../type/recruitment-notice.type';
 import { City } from './city.entity';
+import { JobApplication } from '../../user/entity/job-application.entity';
 
 @Index(['id'])
 @Entity('recruitment_notice', { schema: 'wanted' })
@@ -137,6 +139,12 @@ export class RecruitmentNotice extends BaseEntity {
     },
   ])
   company: Company;
+
+  @OneToMany(
+    () => JobApplication,
+    (jobApplication) => jobApplication.recruitmentNotice,
+  )
+  jobApplications: JobApplication[];
 
   @BeforeInsert()
   @BeforeUpdate()
