@@ -117,9 +117,9 @@
 
 [dto]
 
-- page-options.dto.ts : PageOptionsDto로 api 요청의 queryParameter의 값을 검증하는 메소드와 변환된 값을 얻을 수 있는 getter를 구현하였습니다.
+- page-options.dto.ts : PaginationOptionsDto로 api 요청의 queryParameter의 값을 검증하는 메소드와 변환된 값을 얻을 수 있는 getter를 구현하였습니다.
 - page-meta.dto.ts : 채용공고 목록 응답 값 중 meta 데이터를 담는 응답 dto입니다. 페이지네이션에 필요한 규칙을 담당합니다.
-- page.response-dto.ts : 채용 공고 목록 조회 요청의 응답 dto입니다. 채용 공고 목록 외에도 사용될 여지가 있으므로 data의 타입은 제네릭으로 설정하였습니다.
+- recruitment-notice-list.dto.ts : 채용 공고 목록 조회 요청의 응답 dto입니다. 채용 공고 목록 외에도 사용될 여지가 있으므로 data의 타입은 제네릭으로 설정하였습니다.
 
 [repository]
 

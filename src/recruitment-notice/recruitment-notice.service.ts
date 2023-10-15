@@ -7,12 +7,12 @@ import { RecruitmentNotice } from './entity/recruitment-notice.entity';
 import { RecruitmentNoticeRepository } from './repository/recruitment-notice.repository';
 import { UpdateRecruitmentNoticeProps } from './type/recruitment-notice.type';
 import { UpdateResult } from 'typeorm';
-import { PageOptionsDto } from './dto/query-dto/page-options.dto';
-import { PageMetaDto } from './dto/query-dto/page-meta.dto';
+import { PaginationOptionsDto } from './dto/query/pagination-options.dto';
+import { PageMetaDto } from './dto/query/page-meta.dto';
 import {
-  PageResponseDto,
-  PageResponseType,
-} from './dto/query-dto/page.response-dto';
+  RecruitmentNoticeListType,
+  RecruitmentNoticeListDto,
+} from './dto/query/recruitment-notice-list.dto';
 
 @Injectable()
 export class RecruitmentNoticeService {
@@ -28,8 +28,8 @@ export class RecruitmentNoticeService {
       });
   }
 
-  async getPaginatedList(pageOptionsDto: PageOptionsDto) {
-    const { take, skip, order, searchArray } = pageOptionsDto;
+  async getPaginatedList(paginationOptionsDto: PaginationOptionsDto) {
+    const { take, skip, order, searchArray } = paginationOptionsDto;
 
     const { total, data } =
       await this.recruitmentNoticeRepository.getPaginatedList(
@@ -39,12 +39,15 @@ export class RecruitmentNoticeService {
         searchArray,
       );
 
-    const pageMeteDto = new PageMetaDto({ pageOptionsDto, total });
+    const pageMeteDto = new PageMetaDto({ paginationOptionsDto, total });
     const { lastPage, page } = pageMeteDto;
 
     if (lastPage < page) throw new NotFoundException('PAGE_NOT_EXIST');
 
-    return new PageResponseDto<PageResponseType>(data, pageMeteDto);
+    return new RecruitmentNoticeListDto<RecruitmentNoticeListType>(
+      data,
+      pageMeteDto,
+    );
   }
 
   findOne(id: number) {

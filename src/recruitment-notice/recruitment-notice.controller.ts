@@ -11,7 +11,7 @@ import {
 import { RecruitmentNoticeService } from './recruitment-notice.service';
 import { CreateRecruitmentNoticeDto } from './dto/create-recruitment-notice.dto';
 import { UpdateRecruitmentNoticeDto } from './dto/update-recruitment-notice.dto';
-import { PageOptionsDto } from './dto/query-dto/page-options.dto';
+import { PaginationOptionsDto } from './dto/query/pagination-options.dto';
 
 @Controller('recruitment-notice')
 export class RecruitmentNoticeController {
@@ -30,15 +30,15 @@ export class RecruitmentNoticeController {
   @Get()
   async getPaginatedList(
     @Query()
-    pageOptionsDto: PageOptionsDto,
+    paginationOptionsDto: PaginationOptionsDto,
   ) {
     return await this.recruitmentNoticeService.getPaginatedList(
-      pageOptionsDto.checkPaginateQuery(),
+      paginationOptionsDto.checkPaginateQuery(),
     );
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  getOne(@Param('id') id: string) {
     return this.recruitmentNoticeService.findOne(+id);
   }
 

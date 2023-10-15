@@ -10,7 +10,7 @@ export const SORT = Object.freeze(Object.keys(Sort));
 
 export type SortType = keyof typeof Sort;
 
-export class PageOptionsDto {
+export class PaginationOptionsDto {
   @Expose()
   @Type(() => String)
   @IsIn(SORT)

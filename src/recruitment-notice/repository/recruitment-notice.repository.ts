@@ -1,14 +1,14 @@
-import { PageResponseType } from './../dto/query-dto/page.response-dto';
 import { Company } from './../../company/company.entity';
 import { Injectable } from '@nestjs/common';
 import { MysqlRepositoryBase } from '../../base/mysql-repository.base';
 import { RecruitmentNotice } from '../entity/recruitment-notice.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Brackets, Repository, SelectQueryBuilder } from 'typeorm';
-import { SortType } from '../dto/query-dto/page-options.dto';
+import { SortType } from '../dto/query/pagination-options.dto';
 import { City } from '../entity/city.entity';
 import { isString } from 'class-validator';
 import { Province } from '../entity/province.entity';
+import { RecruitmentNoticeListType } from '../dto/query/recruitment-notice-list.dto';
 
 const ALIAS = {
   RECRUITMENT_NOTICE: 'rn',
@@ -77,7 +77,9 @@ export class RecruitmentNoticeRepository extends MysqlRepositoryBase<Recruitment
 
     return {
       total: await paginatedQuery.getCount(),
-      data: (await paginatedQuery.getRawAndEntities<PageResponseType>()).raw,
+      data: (
+        await paginatedQuery.getRawAndEntities<RecruitmentNoticeListType>()
+      ).raw,
     };
   }
 
