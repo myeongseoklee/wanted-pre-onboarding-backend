@@ -1,9 +1,9 @@
 import { JobApplicationRepository } from './repository/job-application.repository';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { User } from './entity/user.entity';
+import { User } from './domain/user.entity';
 import { UserRepository } from './repository/user.repository';
 import { RecruitmentNoticeRepository } from '../recruitment-notice/repository/recruitment-notice.repository';
-import { JobApplication } from './entity/job-application.entity';
+import { JobApplication } from './domain/job-application.entity';
 
 @Injectable()
 export class UserService {

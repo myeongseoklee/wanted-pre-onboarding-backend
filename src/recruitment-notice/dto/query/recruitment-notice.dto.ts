@@ -1,9 +1,9 @@
-import { RecruitmentNotice } from './../../entity/recruitment-notice.entity';
+import { RecruitmentNotice } from '../../domain/entity/recruitment-notice.entity';
 import {
   Coordinate,
   ExperienceType,
   RecruitmentNoticeStatusType,
-} from './../../type/recruitment-notice.type';
+} from '../../domain/type/recruitment-notice.type';
 import { Exclude, Expose } from 'class-transformer';
 export class RecruitmentNoticeDto {
   @Exclude() private readonly _id: number;

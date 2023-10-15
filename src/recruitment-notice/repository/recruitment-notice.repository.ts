@@ -1,13 +1,13 @@
 import { Company } from './../../company/company.entity';
 import { Injectable } from '@nestjs/common';
 import { MysqlRepositoryBase } from '../../base/mysql-repository.base';
-import { RecruitmentNotice } from '../entity/recruitment-notice.entity';
+import { RecruitmentNotice } from '../domain/entity/recruitment-notice.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Brackets, Repository, SelectQueryBuilder } from 'typeorm';
 import { SortType } from '../dto/query/pagination-options.dto';
-import { City } from '../entity/city.entity';
+import { City } from '../domain/entity/city.entity';
 import { isString } from 'class-validator';
-import { Province } from '../entity/province.entity';
+import { Province } from '../domain/entity/province.entity';
 import { RecruitmentNoticeListType } from '../dto/query/recruitment-notice-list.dto';
 
 const ALIAS = {

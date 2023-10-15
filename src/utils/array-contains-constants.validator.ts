@@ -6,15 +6,20 @@ import {
 
 @ValidatorConstraint()
 export class ArrayContainsConstants implements ValidatorConstraintInterface {
+  private constants: any[];
+
   validate(
     values: unknown[],
     args?: ValidationArguments,
   ): boolean | Promise<boolean> {
     const { constraints: constants } = args;
+    this.constants = constants;
 
-    const isConstants = (value: unknown) => constants.includes(value);
+    return values.every(this.isConstants);
+  }
 
-    return values.every(isConstants);
+  private isConstants(value: unknown) {
+    return this.constants.includes(value);
   }
 
   defaultMessage(args?: ValidationArguments): string {

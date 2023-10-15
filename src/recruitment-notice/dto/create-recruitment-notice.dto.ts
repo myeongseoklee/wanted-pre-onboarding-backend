@@ -23,13 +23,13 @@ import {
   ExperienceType,
   CreateRecruitmentNoticeProps,
   Coordinate,
-} from '../type/recruitment-notice.type';
+} from '../domain/type/recruitment-notice.type';
 import {
   RECRUITMENT_NOTICE_STATUS,
   RecruitmentNoticeStatusType,
-} from '../type/recruitment-notice.type';
-import { RecruitmentNotice } from '../entity/recruitment-notice.entity';
-import { ArrayContainsConstants } from '../type/array-contains-constants.validator';
+} from '../domain/type/recruitment-notice.type';
+import { RecruitmentNotice } from '../domain/entity/recruitment-notice.entity';
+import { ArrayContainsConstants } from '../../utils/array-contains-constants.validator';
 
 class CoordinateDto {
   @IsNotEmpty()

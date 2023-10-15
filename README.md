@@ -16,15 +16,31 @@
 
 ## 커밋 컨벤션
 
+### Commit Type
+
+- Subject : `태그: 제목`의 형태입니다.
+
+> - Feat: 새로운 기능 추가
+> - Docs: 문서 수정
+> - Modify: 변수명, 파일명 등 기능이 아닌 간단한 수정
+> - Refactor: 코드 리펙토링
+
+- Body
+  본문에는 무엇을 어떻게, 왜 작업했는지 그 내용을 자세하게 설명합니다.
+
 ---
 
 ## 프로젝트 구성
 
 ### Stack
 
-- Typescript, Nest.js(Express), TypeORM(MySQL), Jest
+- Typescript, Nest.js(Express), TypeORM(MySQL)
 
-### Class Diagram
+### ERD
+
+![](./images/erd.png)
+
+[DB 생성 쿼리 및 데이터 dump 파일을 다운로드 받을 수 있는 url입니다.](https://drive.google.com/file/d/12_U_jo_AzZafOuh8beN6OtvtkSOysetw/view?usp=sharing)
 
 ---
 
@@ -58,9 +74,9 @@
 
 - 채용 공고 등록 시, 경력(experienceYears)은 신입(0)부터 10년차(10)까지 세부 설정이 가능하고, 10년차 이상(11)은 단일 선택항목으로 둡니다. 경력은 배열로 받지만, db write 시 json string으로 변환하여 저장하고 read시 json으로 parse하여 가져옵니다.
 
-- 근무지 좌표계(coordinate) 필드의 경우 올바른 주소를 저장하기 위한 검증이 필요합니다. 따라서 위도와 경도 값을 갖는 객체를 json string으로 저장하였습니다. read 시 객체로 파싱하여 가져옵니다. 위도와 경도로 저장한 이유는, 외부 api(ex. kakao)를 활용해 주소 값을 검증이 필요할 수 있기 때문입니다. (검증코드는 구현하지 않았습니다.)
+- 근무지 좌표계(coordinate) 필드의 경우 올바른 주소를 저장하기 위한 검증이 필요합니다. 따라서 위도와 경도 값을 갖는 객체를 json string으로 저장하였습니다. read 시 객체로 파싱하여 가져옵니다.(JsonTransformer class 제작하여 사용) 위도와 경도를 활용해 외부 api(ex. kakao)로 주소 값을 검증할 수 있습니다.(검증코드는 구현하지 않았습니다.)
 
-- 채용공고는 한 번에 하나의 직군과 직무만 명시할 수 있습니다. 직군(jobGroup)과 직무(job) 필드의 경우 직무가 직군의 자식 개념이 되므로 직군을 key, 직무를 value로 하는 jobCategory 객체로 정의하여 비즈니스 로직에서 사용합니다. enum 대신 object를 as const로 선언하여 사용했습니다. (단, db에 저장할 때는 직군과 직무를 별도의 varchar column으로 저장합니다.) 편의상 개발 직군의 몇 개의 직무만을 선언해두었습니다. 실제로 채용 담당자가 선택할 수 있는 직군과 직무 데이터는 db에 따로 저장되어 있어야 하며 비즈니스 로직에서는 db에 저장된 데이터와 일치하는지를 확인하는 검증로직이 필요합니다. (코드 구현은 하지 않았습니다.)
+- 채용공고는 한 번에 하나의 직군과 직무만 명시할 수 있습니다. 직군(jobGroup)과 직무(job) 필드의 경우 직무가 직군의 자식 개념이 되므로 직군을 key, 직무를 value로 하는 readonly 타입의 jobCategory 객체(as const)로 정의하여 비즈니스 로직에서 사용합니다.(단, db에 저장할 때는 직군과 직무를 별도의 varchar column으로 저장합니다.) 편의상 개발 직군의 몇 개의 직무만을 선언해두었습니다. 실제로 채용 담당자가 선택할 수 있는 직군과 직무 데이터는 db에 따로 저장되어 있어야 하며 비즈니스 로직에서는 db에 저장된 데이터와 일치하는지를 확인하는 검증로직이 필요합니다.(검증 코드 구현은 하지 않았습니다.)
 
 > 채용 공고(recruitment_notice)는 여러개의 직무(job)로 분류될 수 있어야 하기 때문에 채용공고와(id) 직무(id)와의 관계를 다대일로 설정했습니다.
 >
@@ -105,7 +121,7 @@
 [service]
 
 - 채용 공고삭제 이력도 관리해야 할 데이터라고 생각하여 soft delete 방식으로 구현했습니다.
-- softDelete 메소드의 리턴 객체에는 affected 프로퍼티가 있습니다. 삭제된 튜플의 개수를 value로 갖고 있는 프로퍼티입니다. softDelete는, 요청한 id가 db에 없는 경우 affected의 값을 0으로 반환합> 니다. 따라서 affected < 1 일때, id가 존재하지 않는다는 BadRequestException을 throw했습니다.
+- softDelete 메소드의 리턴 객체에는 affected 프로퍼티가 있습니다. 삭제된 튜플의 개수를 value로 갖고 있는 프로퍼티입니다. softDelete는, 요청한 id가 db에 없는 경우 affected의 값을 0으로 반환합니다. 따라서 affected < 1 일때, id가 존재하지 않는다는 BadRequestException을 throw했습니다.
 
 [entity]
 
@@ -166,9 +182,19 @@
 
 ### 6. 채용 공고 지원
 
-- 하나의 채용공고(recruitment-notice)는 여러명의 구직자의 지원서를 받을 수 있고, 구직자(user)는 여러개의 채용공고에 지원할 수 있습니다. 따라서 구직자(id)와 채용공고(id)의 관계를 다대다로 설정하는 것이 좋습니다. typeORM에서 지원하는 @JoinTable로 연결 테이블을 생성할 수 있지만 다음과 같은 문제로 이 기능을 사용하지 않고 별도의 엔티티(jobApply)를 생성하여 각각 일대다, 다대일 관계를 맺었습니다.
+[controller]
 
-> - 연결 테이블은 매핑 정보만 컬럼으로 가질수 있다는 한계가 있습니다. jobApply 테이블에는 지원 상태(statement) 값이 저장되어야 하며 이외에도 지원 시간, 상태(statement)변화 시간 등 컬럼을 추가할 가능성이 높습니다.
-> - 구직자와 채용 공고의 관계(relation)는 '지원'의 관계로도 묶일 수 있지만 '스크랩, 좋아요'등의 기능으로도 묶일 수 있으므로 가상의 연결테이블 보다 엔티티를 활용하는 것이 좋다고 생각합니다.
+- userId와 recruitmentNoticeId를 path parameter로 받습니다.
 
-- 구직자는 하나의 채용공고에 1회만 지원 가능하므로, jobApply 테이블에서 구직자\_id 컬럼과 채용공고\_id 컬럼을 한 쌍으로 unique key 제약을 설정했습니다.
+[entity]
+
+- 하나의 채용공고(recruitment-notice)는 여러명의 구직자의 지원서를 받을 수 있고, 구직자(user)는 여러개의 채용공고에 지원할 수 있습니다. 따라서 구직자(id)와 채용공고(id)의 관계를 다대다로 설정하는 것이 좋습니다. typeORM에서 지원하는 @JoinTable로 연결 테이블을 생성할 수 있지만 다음과 같은 문제로 이 기능을 사용하지 않고 별도의 엔티티(jobApplication)를 생성하여 각각 일대다, 다대일 관계를 설정하였습니다.
+
+  > - 연결 테이블은 매핑 정보만 컬럼으로 가질수 있다는 한계가 있습니다. jobApplication 테이블에는 지원 상태(statement)값, 지원 시간, 상태(statement)변화 시간 등 컬럼을 추가할 가능성이 높습니다.
+  > - 구직자와 채용 공고의 관계(relation)는 '지원'의 관계로도 묶일 수 있지만 '스크랩, 좋아요'등의 기능으로도 묶일 수 있으므로 가상의 연결테이블 보다 엔티티를 활용하는 것이 좋다고 생각합니다.
+
+- 구직자는 하나의 채용공고에 1회만 지원 가능하므로, jobApplication 테이블에서 구직자\_id 컬럼과 채용공고\_id 컬럼을 한 쌍으로 unique key 제약을 설정했습니다.
+
+[service]
+
+- userId와 recruitmentNoticeId로 user, recruitmentNotice 엔티티를 조회한 후, jobApplication 엔티티의 정적 메소드(create)로 엔티티를 생성한 후 save합니다.

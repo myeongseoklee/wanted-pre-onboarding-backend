@@ -4,9 +4,9 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { RecruitmentNotice } from './entity/recruitment-notice.entity';
+import { RecruitmentNotice } from './domain/entity/recruitment-notice.entity';
 import { RecruitmentNoticeRepository } from './repository/recruitment-notice.repository';
-import { UpdateRecruitmentNoticeProps } from './type/recruitment-notice.type';
+import { UpdateRecruitmentNoticeProps } from './domain/type/recruitment-notice.type';
 import { UpdateResult } from 'typeorm';
 import { PaginationOptionsDto, Sort } from './dto/query/pagination-options.dto';
 import { PageMetaDto } from './dto/query/page-meta.dto';

@@ -1,5 +1,5 @@
 import { Column, Entity, Index, OneToMany, Unique } from 'typeorm';
-import { BaseEntity } from '../../base/entity.base';
+import { BaseEntity } from '../../../base/entity.base';
 import { Job } from './job.entity';
 
 @Index(['id'])

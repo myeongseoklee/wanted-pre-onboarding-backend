@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { MysqlRepositoryBase } from '../../base/mysql-repository.base';
-import { Job } from '../entity/job.entity';
+import { Job } from '../domain/entity/job.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 

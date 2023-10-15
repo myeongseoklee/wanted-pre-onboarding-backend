@@ -1,7 +1,7 @@
 import { User } from './user.entity';
 import { Entity, Index, JoinColumn, ManyToOne, Unique } from 'typeorm';
 import { BaseEntity } from '../../base/entity.base';
-import { RecruitmentNotice } from '../../recruitment-notice/entity/recruitment-notice.entity';
+import { RecruitmentNotice } from '../../recruitment-notice/domain/entity/recruitment-notice.entity';
 
 interface JopApplicationProps {
   recruitmentNotice: RecruitmentNotice;

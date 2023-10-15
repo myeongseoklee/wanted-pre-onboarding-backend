@@ -1,4 +1,4 @@
-import { RecruitmentNotice } from './../recruitment-notice/entity/recruitment-notice.entity';
+import { RecruitmentNotice } from '../recruitment-notice/domain/entity/recruitment-notice.entity';
 import { Column, Entity, Index, OneToMany, Unique } from 'typeorm';
 import { BaseEntity } from '../base/entity.base';
 

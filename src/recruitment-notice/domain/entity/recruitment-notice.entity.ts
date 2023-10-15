@@ -1,5 +1,5 @@
-import { Company } from './../../company/company.entity';
-import { BaseEntity } from '../../base/entity.base';
+import { Company } from '../../../company/company.entity';
+import { BaseEntity } from '../../../base/entity.base';
 import {
   BeforeInsert,
   BeforeUpdate,
@@ -10,7 +10,7 @@ import {
   ManyToOne,
   OneToMany,
 } from 'typeorm';
-import { JsonTransformer } from '../type/json.transformer';
+import { JsonTransformer } from '../../../utils/json.transformer';
 import {
   ExperienceYears,
   ExperienceYearsCodeType,
@@ -22,7 +22,7 @@ import {
 import { Job } from './job.entity';
 import { RecruitmentNoticeStatusType } from '../type/recruitment-notice.type';
 import { City } from './city.entity';
-import { JobApplication } from '../../user/entity/job-application.entity';
+import { JobApplication } from '../../../user/domain/job-application.entity';
 
 @Index(['id'])
 @Entity('recruitment_notice', { schema: 'wanted' })
