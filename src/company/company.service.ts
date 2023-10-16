@@ -1,9 +1,12 @@
+import { CompanyRepository } from './company.repository';
 import { Injectable } from '@nestjs/common';
-import { CreateCompanyDto } from './dto/create-company.dto';
+import { Company } from './company.entity';
 
 @Injectable()
 export class CompanyService {
-  create(createCompanyDto: CreateCompanyDto) {
-    return 'This action adds a new company';
+  constructor(private companyRepository: CompanyRepository) {}
+
+  async create(company: Company) {
+    await this.companyRepository.saveIfNotExist(company);
   }
 }
